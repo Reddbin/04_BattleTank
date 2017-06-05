@@ -8,12 +8,12 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("TankAIController Begin Play"));
-	auto TankPawn = GetControlledTank();
+	auto PlayerTank = GetPlayerTank();
 	FString Message = "none";
-	if (TankPawn != nullptr) {
-		Message = TankPawn->GetFName().ToString();
+	if (PlayerTank != nullptr) {
+		Message = PlayerTank->GetFName().ToString();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("AI taking control of tank: %s"), *Message);
+	UE_LOG(LogTemp, Warning, TEXT("Found player controlled tank: %s"), *Message);
 }
 
 ATank* ATankAIController::GetControlledTank() const
@@ -21,3 +21,9 @@ ATank* ATankAIController::GetControlledTank() const
 	return Cast<ATank>(GetPawn());
 }
 
+ATank* ATankAIController::GetPlayerTank() const
+{
+	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	return Cast<ATank>(PlayerPawn); // no check for null needed, since Cast would simply return null if PlayerPawn were null
+
+}
