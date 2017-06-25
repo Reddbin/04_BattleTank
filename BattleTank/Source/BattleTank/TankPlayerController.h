@@ -35,4 +35,7 @@ private:
 
 	// return an OUT parameter, true if hit landscape
 	bool GetSightRayHitLocation(FVector & OutHitLocation) const;
+
+	// return an OUT parameter
+	bool GetLookDirection(FVector2D ScreenLocation, FVector & OutLookDirection) const;
 };
