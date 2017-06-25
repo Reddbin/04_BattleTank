@@ -4,11 +4,30 @@
 #include "TankAIController.h"
 
 
+void ATankAIController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    if(GetPlayerTank())
+    {
+        if (GetControlledTank()) // is this ptr protection neccessary?
+        {
+            // TODO move towards the player
+
+            // Aim toward the player
+            GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+
+            // Fire if ready
+        }
+        
+    }
+   
+}
+
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("TankAIController Begin Play"));
-	auto PlayerTank = GetPlayerTank();
+	auto* PlayerTank = GetPlayerTank();
 	FString Message = "none";
 	if (PlayerTank != nullptr) {
 		Message = PlayerTank->GetFName().ToString();
@@ -23,7 +42,7 @@ ATank* ATankAIController::GetControlledTank() const
 
 ATank* ATankAIController::GetPlayerTank() const
 {
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	return Cast<ATank>(PlayerPawn); // no check for null needed, since Cast would simply return null if PlayerPawn were null
 
 }
