@@ -23,6 +23,9 @@ public:
 	virtual void BeginPlay() override;
 
 private:
+    UPROPERTY(EditAnywhere)
+    float LineTraceRange = 1000000.0;
+
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5;
 
@@ -38,4 +41,5 @@ private:
 
 	// return an OUT parameter
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & OutLookDirection) const;
+    bool GetLookVectorHitLocation(FVector LookDirection, FVector & OutHitLocation) const;
 };
