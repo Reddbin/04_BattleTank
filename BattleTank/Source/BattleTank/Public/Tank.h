@@ -34,4 +34,7 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+    UPROPERTY(EditAnywhere, Category = Firing)
+    float LauchnSpeed = 100000; // Sensible starting value off 1000 m/s
+
 };
