@@ -4,8 +4,10 @@
 
 #include "TankAimingComponent.h"
 #include "GameFramework/Pawn.h"
-#include "Tank.generated.h" // Put new includes above this
+#include "Tank.generated.h"
 
+
+class UTankBarrel; // Forward Declaration#include "Tank.generated.h" // Put new includes above this
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -19,7 +21,7 @@ public:
     void AimAt(FVector HitLocation);
 
     UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+    void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 protected:
 	// Called when the game starts or when spawned
