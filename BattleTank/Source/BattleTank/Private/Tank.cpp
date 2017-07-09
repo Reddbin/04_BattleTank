@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Projectile.h"
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 #include "Tank.h"
 
 
@@ -18,11 +20,19 @@ ATank::ATank()
 void ATank::Fire()
 {
     UE_LOG(LogTemp, Warning, TEXT("Tank is firing"));
+    if (!Barrel) {return; }
+    
+    // Spawn a projectile at the socket location of the barrel
+    auto SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
+    GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, 
+                                        SpawnLocation,
+                                        Barrel->GetSocketRotation(FName("Projectile")));
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
     TankAimingComponent->SetBarrelReference(BarrelToSet);
+    Barrel = BarrelToSet;
 }
 
 void ATank::SetTurretReference(UTankTurret* TurretToSet)
