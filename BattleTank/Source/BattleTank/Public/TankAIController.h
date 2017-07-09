@@ -21,8 +21,4 @@ private:
     virtual void Tick(float DeltaTime) override;
 
 	virtual void BeginPlay() override;
-	
-	ATank* GetPlayerTank() const;
-
-    ATank* GetControlledTank() const;
 };
