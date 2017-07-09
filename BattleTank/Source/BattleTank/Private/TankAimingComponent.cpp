@@ -49,8 +49,10 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
         auto AimDirection = OutLauchnVelocity.GetSafeNormal();
         MoveBarrelTowards(AimDirection);
         MoveTurretTowards(AimDirection);
+        
     }
-    
+    //MoveBarrelTowards(HitLocation);
+    //MoveTurretTowards(HitLocation); // turret should move to the cursor even without Aim solution
     // If no solution found do nothing
 }
 
@@ -64,6 +66,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     Barrel->Elevate(DeltaRotator.Pitch);
 }
 
+// We seperate movement of turret and barrel
 void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 {
     // Get the difference between current turret rotation, and AimDirection

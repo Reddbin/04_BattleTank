@@ -42,7 +42,7 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
     UPROPERTY(EditAnywhere, Category = Firing)
-    float LauchnSpeed = 400000; // Sensible starting value off 1000 m/s
+    float LauchnSpeed = 4000; // Sensible starting value off 1000 m/s
 
     UPROPERTY(EditAnywhere, Category = Setup)
     TSubclassOf<AProjectile> ProjectileBlueprint;
