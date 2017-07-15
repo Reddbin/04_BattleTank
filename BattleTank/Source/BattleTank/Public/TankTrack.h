@@ -18,8 +18,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = Input)
     void SetThrottle(float Throttle);
 	
+    UPROPERTY(EditDefaultsOnly, Category = Setup)
+    float MaxTankSpeed = 400; // Set to fun speed, should be above zero
+
     // Max force per Track, in Newtons 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditDefaultsOnly, Category = Setup)
     float TrackMaxDrivingForce = 400000.f; // Assume 40 tonne tank, and 1g accelleration
 	
 };

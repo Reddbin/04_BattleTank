@@ -5,12 +5,12 @@
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-    // TODO Clamp actual throttle valu so player can't over-drive
+    // TODO Clamp actual throttle value so player can't over-drive
     auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
     auto ForceLocation = GetComponentLocation();
     auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-    // AddForceAtLocation would not apply an accelaration
-    TankRoot->AddImpulseAtLocation(ForceApplied, ForceLocation); // TODO add max speed
+    // why does impulse work better?
+    TankRoot->AddImpulseAtLocation(ForceApplied, ForceLocation);
 }
 
 
