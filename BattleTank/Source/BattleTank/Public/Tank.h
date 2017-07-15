@@ -9,6 +9,7 @@
 // Forward Declaration#includes
 class UTankAimingComponent;
 class AProjectile;
+class UTankMovementComponent;
 
 
 UCLASS()
@@ -36,6 +37,9 @@ protected:
 	virtual void BeginPlay() override;
 
     UTankAimingComponent* TankAimingComponent = nullptr;
+
+    UPROPERTY(BlueprintReadOnly)
+    UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
 	// Called to bind functionality to input
