@@ -73,6 +73,6 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
     auto TurretRotator = Turret->GetForwardVector().Rotation();
     auto AimAsRotator = AimDirection.Rotation();
     auto DeltaRotator = AimAsRotator - TurretRotator;
-
+    // TODO make angle always be smallest solution to reach target rotation 
     Turret->Rotate(DeltaRotator.Yaw);
 }
