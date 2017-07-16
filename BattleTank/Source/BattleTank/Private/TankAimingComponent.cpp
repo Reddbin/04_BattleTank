@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+
+#include "Projectile.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "TankAimingComponent.h"
@@ -16,19 +18,14 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
+void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-    if(!BarrelToSet){return;}
-    Barrel = BarrelToSet;
-}
 
-void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
-{
-    if (!TurretToSet) { return; }
+    Barrel = BarrelToSet;
     Turret = TurretToSet;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
+void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
     if (!Barrel) { return;}
     if (!Turret) { return;}
@@ -39,7 +36,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
                                                                         OutLauchnVelocity,
                                                                         StartLocation,
                                                                         HitLocation,
-                                                                        LauchSpeed,
+                                                                        LaunchSpeed,
                                                                         false,
                                                                         0,
                                                                         0,
@@ -48,7 +45,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
     {
         auto AimDirection = OutLauchnVelocity.GetSafeNormal();
         MoveBarrelTowards(AimDirection);
-        MoveTurretTowards(AimDirection);
+        
         
     }
     //MoveBarrelTowards(HitLocation);
@@ -59,20 +56,29 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LauchSpeed)
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
     // Get the difference between current barrel rotation, and AimDirection
+    if (!Barrel) { return; }
     auto BarrelRotator = Barrel->GetForwardVector().Rotation();
     auto AimAsRotator = AimDirection.Rotation();
     auto DeltaRotator = AimAsRotator - BarrelRotator;
 
     Barrel->Elevate(DeltaRotator.Pitch);
-}
-
-// We seperate movement of turret and barrel
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-    // Get the difference between current turret rotation, and AimDirection
-    auto TurretRotator = Turret->GetForwardVector().Rotation();
-    auto AimAsRotator = AimDirection.Rotation();
-    auto DeltaRotator = AimAsRotator - TurretRotator;
-    // TODO make angle always be smallest solution to reach target rotation 
     Turret->Rotate(DeltaRotator.Yaw);
 }
+
+void UTankAimingComponent::Fire(float LaunchSpeed)
+{
+    bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+    if (Barrel && isReloaded)
+    {
+        // Spawn a projectile at the socket location of the barrel
+        auto SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
+        auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+                                                              SpawnLocation,
+                                                              Barrel->GetSocketRotation(FName("Projectile")));
+
+        Projectile->LaunchProjectile(LaunchSpeed);
+        LastFireTime = FPlatformTime::Seconds();
+        CurrentFiringStatus = EFiringStatus::Reloading;
+    }
+}
+

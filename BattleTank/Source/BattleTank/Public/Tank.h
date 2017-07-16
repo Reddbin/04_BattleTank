@@ -8,7 +8,6 @@
 
 // Forward Declaration#includes
 class UTankAimingComponent;
-class AProjectile;
 class UTankMovementComponent;
 
 
@@ -26,12 +25,6 @@ public:
     UFUNCTION(BlueprintCallable)
     void Fire();
 
-    UFUNCTION(BlueprintCallable, Category = "Setup")
-    void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-    UFUNCTION(BlueprintCallable, Category = "Setup")
-    void SetTurretReference(UTankTurret* TurretToSet);
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,21 +36,7 @@ protected:
     UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    // Local barrel reference for spawning projectile
-    UTankBarrel* Barrel = nullptr;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    TSubclassOf<AProjectile> ProjectileBlueprint;
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LauchnSpeed = 4000; // Sensible starting value off 1000 m/s
-
-    UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float ReloadTimeInSeconds = 3;
-
-    double LastFireTime = 0;
-
+    float LaunchSpeed = 4000; // Sensible starting value off 1000 m/s
 };
