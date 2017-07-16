@@ -19,7 +19,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-    UE_LOG(LogTemp, Warning, TEXT("DONKEY: Begin play called in c++"))
+    
 }
 
 void ATank::Fire()
