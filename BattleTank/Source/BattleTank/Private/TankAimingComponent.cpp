@@ -27,8 +27,8 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-    if (!Barrel) { return;}
-    if (!Turret) { return;}
+    if (!ensure(Barrel)) { return;}
+    if (!ensure(Turret)) { return;}
 
     FVector OutLauchnVelocity;
     FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -56,7 +56,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
     // Get the difference between current barrel rotation, and AimDirection
-    if (!Barrel) { return; }
+    if (!ensure(Barrel)) { return; }
     auto BarrelRotator = Barrel->GetForwardVector().Rotation();
     auto AimAsRotator = AimDirection.Rotation();
     auto DeltaRotator = AimAsRotator - BarrelRotator;
@@ -68,7 +68,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 void UTankAimingComponent::Fire(float LaunchSpeed)
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-    if (Barrel && isReloaded)
+    if(!ensure(Barrel)) {return;}
+    if (isReloaded)
     {
         // Spawn a projectile at the socket location of the barrel
         auto SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
