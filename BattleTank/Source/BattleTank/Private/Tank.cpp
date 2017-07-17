@@ -2,8 +2,6 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
-#include "TankBarrel.h"
-#include "TankMovementComponent.h"
 #include "Tank.h"
 
 
