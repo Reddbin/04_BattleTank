@@ -35,9 +35,9 @@ public:
     void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
     //UFUNCTION(BlueprintCallable)
-    void Fire(float LaunchSpeed);
+    void Fire();
 
-    void AimAt(FVector HitLocation, float LaunchSpeed);
+    void AimAt(FVector HitLocation);
 
 protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")

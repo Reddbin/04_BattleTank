@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
-#include "TankAimingComponent.h"
 #include "Tank.h"
 
 
@@ -19,17 +18,4 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
     
 }
-
-void ATank::Fire()
-{
-    if (!ensure(TankAimingComponent)) { return; }
-    TankAimingComponent->Fire(LaunchSpeed);
-}
-
-void ATank::AimAt(FVector HitLocation)
-{
-    if(!ensure(TankAimingComponent)) {return;}
-    TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
 

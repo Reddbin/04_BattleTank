@@ -25,7 +25,7 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
     Turret = TurretToSet;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
     if (!ensure(Barrel)) { return;}
     if (!ensure(Turret)) { return;}
@@ -65,7 +65,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     Turret->Rotate(DeltaRotator.Yaw);
 }
 
-void UTankAimingComponent::Fire(float LaunchSpeed)
+void UTankAimingComponent::Fire()
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
     if(!ensure(Barrel)) {return;}
