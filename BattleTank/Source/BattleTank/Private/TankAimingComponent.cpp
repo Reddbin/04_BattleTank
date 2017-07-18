@@ -18,14 +18,15 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
+// is called from BP
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-
     Barrel = BarrelToSet;
     Turret = TurretToSet;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+// Looks if the target is within range and move turret+barrel to towards it
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
     if (!ensure(Barrel)) { return;}
     if (!ensure(Turret)) { return;}
@@ -45,14 +46,10 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
     {
         auto AimDirection = OutLauchnVelocity.GetSafeNormal();
         MoveBarrelTowards(AimDirection);
-        
-        
     }
-    //MoveBarrelTowards(HitLocation);
-    //MoveTurretTowards(HitLocation); // turret should move to the cursor even without Aim solution
-    // If no solution found do nothing
 }
 
+// Delegates movement of barrel and turret towards components
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
     // Get the difference between current barrel rotation, and AimDirection
@@ -65,7 +62,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     Turret->Rotate(DeltaRotator.Yaw);
 }
 
-void UTankAimingComponent::Fire(float LaunchSpeed)
+// Checks whether firing is ready and spawns a projecile if true
+void UTankAimingComponent::Fire()
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
     if(!ensure(Barrel)) {return;}

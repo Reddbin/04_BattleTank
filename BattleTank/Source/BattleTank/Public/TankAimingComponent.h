@@ -34,28 +34,32 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Setup")
     void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
-    //UFUNCTION(BlueprintCallable)
-    void Fire(float LaunchSpeed);
+    UFUNCTION(BlueprintCallable)
+    void Fire();
 
-    void AimAt(FVector HitLocation, float LaunchSpeed);
+    void AimAt(FVector HitLocation);
 
 protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")
     EFiringStatus CurrentFiringStatus = EFiringStatus::Locked;
 
 private:
+    // The barrel that belongs to this component
     UTankBarrel* Barrel = nullptr;
 
+    // The turret that belongs to this component
     UTankTurret* Turret = nullptr;
 
     void MoveBarrelTowards(FVector AimDirection);
 
+    // Default in seconds for delay between shots
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
     float ReloadTimeInSeconds = 3;
 
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
 
+    // Time in seconds since the last projectile was spawned from this component
     double LastFireTime = 0;
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
