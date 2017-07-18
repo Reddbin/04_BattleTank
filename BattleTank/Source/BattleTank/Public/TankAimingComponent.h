@@ -34,7 +34,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Setup")
     void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
-    //UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable)
     void Fire();
 
     void AimAt(FVector HitLocation);
