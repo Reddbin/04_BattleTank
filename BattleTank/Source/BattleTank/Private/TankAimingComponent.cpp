@@ -18,13 +18,14 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
+// Setting up the components
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-
     Barrel = BarrelToSet;
     Turret = TurretToSet;
 }
 
+// Finds the vector for hiting the target and moves turret+ barrel if there is a solution 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
     if (!ensure(Barrel)) { return;}
@@ -48,11 +49,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
         
         
     }
-    //MoveBarrelTowards(HitLocation);
-    //MoveTurretTowards(HitLocation); // turret should move to the cursor even without Aim solution
-    // If no solution found do nothing
 }
 
+// Delegates to Barrel and Turret for purpose of moving them
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
     // Get the difference between current barrel rotation, and AimDirection
@@ -65,10 +64,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     Turret->Rotate(DeltaRotator.Yaw);
 }
 
+// Responsible for spawning the projectile at, if ready
 void UTankAimingComponent::Fire()
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-    if(!ensure(Barrel)) {return;}
+    if(!ensure(Barrel && ProjectileBlueprint)) {return;}
     if (isReloaded)
     {
         // Spawn a projectile at the socket location of the barrel
