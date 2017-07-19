@@ -44,11 +44,15 @@ protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")
     EFiringStatus CurrentFiringStatus = EFiringStatus::Locked;
 
+    virtual void BeginPlay() override;
+
 private:
-    UTankBarrel* Barrel = nullptr;
-    UTankTurret* Turret = nullptr;
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
     void MoveBarrelTowards(FVector AimDirection);
+
+    UTankBarrel* Barrel = nullptr;
+    UTankTurret* Turret = nullptr;
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
     float ReloadTimeInSeconds = 3;
@@ -56,6 +60,7 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
 
+    // Used for checking whether firing is possible again
     double LastFireTime = 0;
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
