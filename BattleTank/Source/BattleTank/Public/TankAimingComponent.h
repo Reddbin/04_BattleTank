@@ -47,6 +47,8 @@ protected:
     virtual void BeginPlay() override;
 
 private:
+    bool IsBarrelMoving();
+
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
     void MoveBarrelTowards(FVector AimDirection);
@@ -66,4 +68,6 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
     float LaunchSpeed = 4000; // Sensible starting value off 1000 m/s
 
+    // Is determined in AimAt and used as the point to move to barrel towards
+    FVector AimDirection = FVector().ZeroVector;
 };
