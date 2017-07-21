@@ -5,7 +5,7 @@
 
 UTankTrack::UTankTrack()
 {
-    PrimaryComponentTick.bCanEverTick = true;
+    PrimaryComponentTick.bCanEverTick = false;
     OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
@@ -14,12 +14,21 @@ void UTankTrack::BeginPlay()
     Super::BeginPlay();
 }
 
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-    Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
-    
-    auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+    //UE_LOG(LogTemp, Warning, TEXT("DONKEY: Constructor called in c++"))
+    // Drive the tracks
+    DriveTrack();
+    ApplySidewaysForce();
+    // reset throttle
+    CurrentThrottle = 0;
+}
+
+void UTankTrack::ApplySidewaysForce()
+{
     // Work-out the required acceleration this frame to correct
+    auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());   
+    auto DeltaTime = GetWorld()->GetDeltaSeconds();
     auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
     // Calculate and apply sideways force ( F= m a)
     auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
@@ -29,17 +38,18 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-    // TODO Clamp actual throttle value so player can't over-drive
-    auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+    CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
+}
+
+void UTankTrack::DriveTrack()
+{
+    auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
     auto ForceLocation = GetComponentLocation();
     auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
     // TODO implement maximum speed
     TankRoot->AddImpulseAtLocation(ForceApplied, ForceLocation);
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-    //UE_LOG(LogTemp, Warning, TEXT("DONKEY: Constructor called in c++"))
-}
+
 
 

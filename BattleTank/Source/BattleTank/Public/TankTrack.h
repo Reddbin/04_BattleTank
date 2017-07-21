@@ -18,11 +18,12 @@ public:
 
     virtual void BeginPlay() override;
 
-    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+    void ApplySidewaysForce();
 
     // Sets a thorttle between -1 and +1
     UFUNCTION(BlueprintCallable, Category = "Input")
     void SetThrottle(float Throttle);
+
 	
     UPROPERTY(EditDefaultsOnly, Category = "Setup" )
     float MaxTankSpeed = 400; // Set to fun speed, should be above zero
@@ -34,4 +35,8 @@ public:
 private:
     UFUNCTION()
     void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+    void DriveTrack();
+
+    float CurrentThrottle = 0;
 };
