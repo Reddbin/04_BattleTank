@@ -16,6 +16,8 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 public:
     UTankTrack();
 
+    virtual void BeginPlay() override;
+
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
     // Sets a thorttle between -1 and +1
@@ -29,4 +31,7 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     float TrackMaxDrivingForce = 400000.f; // Assume 40 tonne tank, and 1g accelleration
 
+private:
+    UFUNCTION()
+    void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };
