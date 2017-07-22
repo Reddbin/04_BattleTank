@@ -42,6 +42,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
     // TODO Handle aiming and locket states
 }
 
+EFiringStatus UTankAimingComponent::GetFiringState() const
+{
+    return CurrentFiringStatus;
+}
+
 bool UTankAimingComponent::IsBarrelMoving()
 {
     if(!ensure(Barrel)) {return false;}
