@@ -12,7 +12,8 @@ enum class EFiringStatus : uint8
 {
     Reloading,
     Aiming,
-    Locked
+    Locked,
+    OutOfAmmo
 };
 
 // Forward Declaration
@@ -40,6 +41,9 @@ public:
     UFUNCTION(BlueprintCallable)
     void AimAt(FVector HitLocation);
 
+    UFUNCTION(BlueprintCallable, Category = "Setup")
+    int32 GetCurrentAmmo() const;
+
     EFiringStatus GetFiringState() const;
 
 protected:
@@ -49,7 +53,9 @@ protected:
     virtual void BeginPlay() override;
 
 private:
-    bool IsBarrelMoving();
+    bool IsBarrelMoving() const;
+
+    bool HasNoAmmo() const;
 
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
@@ -68,8 +74,11 @@ private:
     double LastFireTime = 0;
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LaunchSpeed = 4000; // Sensible starting value off 1000 m/s
+    float LaunchSpeed = 8000; // Sensible starting value off 1000 m/s
 
     // Is determined in AimAt and used as the point to move to barrel towards
     FVector AimDirection = FVector().ZeroVector;
+
+    // Will be displayed on screen
+    int32 CurrentAmmo = 30;
 };

@@ -27,7 +27,11 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds;
-    if (isReloaded)
+    if (HasNoAmmo())
+    {
+        CurrentFiringStatus = EFiringStatus::OutOfAmmo;
+    }
+    else if (isReloaded)
     {
         CurrentFiringStatus = EFiringStatus::Reloading;
     }
@@ -47,10 +51,20 @@ EFiringStatus UTankAimingComponent::GetFiringState() const
     return CurrentFiringStatus;
 }
 
-bool UTankAimingComponent::IsBarrelMoving()
+bool UTankAimingComponent::IsBarrelMoving() const
 {
     if(!ensure(Barrel)) {return false;}
     return !Barrel->GetForwardVector().FVector::Equals(AimDirection, 0.1f);
+}
+
+int32 UTankAimingComponent::GetCurrentAmmo() const
+{
+    return CurrentAmmo;
+}
+
+bool UTankAimingComponent::HasNoAmmo() const
+{
+    return CurrentAmmo <= 0;
 }
 
 // Setting up the components
@@ -108,7 +122,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector ResultNormal)
 // Responsible for spawning the projectile at, if ready
 void UTankAimingComponent::Fire()
 {
-    if (CurrentFiringStatus != EFiringStatus::Reloading)
+    if (CurrentFiringStatus == EFiringStatus::Locked || CurrentFiringStatus == EFiringStatus::Aiming)
     {
         if (!ensure(Barrel && ProjectileBlueprint)) { return; }
         // Spawn a projectile at the socket location of the barrel
@@ -120,6 +134,7 @@ void UTankAimingComponent::Fire()
         Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
         CurrentFiringStatus = EFiringStatus::Reloading;
+        CurrentAmmo--;
     }
 }
 
