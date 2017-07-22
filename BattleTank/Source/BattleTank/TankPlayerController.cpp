@@ -27,15 +27,15 @@ void ATankPlayerController::Tick(float DeltaTime)
 void ATankPlayerController::AimTowardsCrosshair() 
 {
 	if (!GetPawn()) { return; } // e.g. if not possessing
+    auto* AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+    if (!ensure(AimingComponent)) { return; }
 
 	FVector HitLocation; // Out parameter
-    auto* AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	if (GetSightRayHitLocation(HitLocation)) // Has "side-effect", is going to line trace
+    bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+	if (bGotHitLocation) // Has "side-effect", is going to line trace
 	{
-        if(!ensure(AimingComponent)) {return;}
         AimingComponent->AimAt(HitLocation);
 	}
-	
 }
 
 // Get world location of linetrace through crosshair, true if hits landscape
@@ -52,10 +52,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	{
         // Line-trace along that look, and see what we hit (up to max range)
         FHitResult HitLocation;  // out param
-        GetLookVectorHitLocation(LookDirection, OutHitLocation);
+        return GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
-	
-	return true;
+	return false;
 }
 
 // Returns false if unable to determine value

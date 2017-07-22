@@ -38,5 +38,9 @@ private:
 
     void DriveTrack();
 
+    // If this is not high enough, rotating is next to impossible
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float MaxThrottle = 1.5f;
+
     float CurrentThrottle = 0;
 };

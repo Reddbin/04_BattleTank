@@ -80,16 +80,24 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 }
 
 // Delegates to Barrel and Turret for purpose of moving them
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards(FVector ResultNormal)
 {
     // Get the difference between current barrel rotation, and AimDirection
     if (!ensure(Barrel)) { return; }
     auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-    auto AimAsRotator = AimDirection.Rotation();
+    auto AimAsRotator = ResultNormal.Rotation();
     auto DeltaRotator = AimAsRotator - BarrelRotator;
 
     Barrel->Elevate(DeltaRotator.Pitch);
-    Turret->Rotate(DeltaRotator.Yaw);
+    // always use shortest way around
+    if (FMath::Abs(DeltaRotator.Yaw) < 180.f)
+    {
+        Turret->Rotate(DeltaRotator.Yaw);
+    }
+    else
+    {
+        Turret->Rotate(-DeltaRotator.Yaw);
+    }
 }
 
 // Responsible for spawning the projectile at, if ready
