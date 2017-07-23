@@ -124,14 +124,10 @@ void UTankAimingComponent::Fire()
 {
     if (CurrentFiringStatus == EFiringStatus::Locked || CurrentFiringStatus == EFiringStatus::Aiming)
     {
-        if (!ensure(Barrel && ProjectileBlueprint)) { return; }
-        // Spawn a projectile at the socket location of the barrel
-        auto SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
-        auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
-                                                              SpawnLocation,
-                                                              Barrel->GetSocketRotation(FName("Projectile")));
+        if (!ensure(Barrel)) { return; }
+        // Let the Barrel Spawn a Projectile
+        Barrel->SpawnProjectileWithSpeed(LaunchSpeed);
 
-        Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
         CurrentFiringStatus = EFiringStatus::Reloading;
         CurrentAmmo--;

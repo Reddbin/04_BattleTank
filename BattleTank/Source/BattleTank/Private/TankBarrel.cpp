@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Projectile.h"
 #include "TankBarrel.h"
 
 
@@ -15,3 +16,13 @@ void UTankBarrel::Elevate(float RelativeSpeed)
     SetRelativeRotation(FRotator(ClampedNewElevation, 0, 0));
 }
 
+// Spawns a projectile at socketlocation, should be overriden by subclasses
+void UTankBarrel::SpawnProjectileWithSpeed(float LaunchSpeed)
+{
+    if (!ensure(ProjectileBlueprint)) { return; }
+    auto SpawnLocation = GetSocketLocation(FName("Projectile"));
+    auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+                                                          SpawnLocation,
+                                                          GetSocketRotation(FName("Projectile")));
+    Projectile->LaunchProjectile(LaunchSpeed);
+}

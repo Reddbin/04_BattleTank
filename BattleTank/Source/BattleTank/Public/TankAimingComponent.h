@@ -48,7 +48,7 @@ public:
 
 protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")
-    EFiringStatus CurrentFiringStatus = EFiringStatus::Locked;
+    EFiringStatus CurrentFiringStatus = EFiringStatus::Reloading;
 
     virtual void BeginPlay() override;
 
@@ -66,9 +66,6 @@ private:
 
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
     float ReloadTimeInSeconds = 3;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    TSubclassOf<AProjectile> ProjectileBlueprint;
 
     // Used for checking whether firing is possible again
     double LastFireTime = 0;
