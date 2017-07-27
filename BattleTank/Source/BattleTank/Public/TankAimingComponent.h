@@ -64,18 +64,19 @@ private:
     UTankBarrel* Barrel = nullptr;
     UTankTurret* Turret = nullptr;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float ReloadTimeInSeconds = 3;
-
     // Used for checking whether firing is possible again
     double LastFireTime = 0;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LaunchSpeed = 8000; // Sensible starting value off 1000 m/s
 
     // Is determined in AimAt and used as the point to move to barrel towards
     FVector AimDirection = FVector().ZeroVector;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Firing")
+    float LaunchSpeed = 8000; // Sensible starting value off 1000 m/s
+
+    UPROPERTY(EditDefaultsOnly, Category = "Firing")
+    float ReloadTimeInSeconds = 3;
+
     // Will be displayed on screen
+    UPROPERTY(EditDefaultsOnly, Category = "Firing")
     int32 CurrentAmmo = 30;
 };

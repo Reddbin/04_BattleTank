@@ -2,3 +2,7 @@ BattleTank/Content/UI/BT17-Firing-M1A1-tank-in-Djibouti.uasset
 BattleTank/Content/Materials/Ocean.uasset
 BattleTank/Content/Materials/GerstnerCluster.uasset
 BattleTank/Content/Materials/Gerstner.uasset
+BattleTank/Source/BattleTank/Public/SingleGerstner.h
+BattleTank/Source/BattleTank/Public/GerstnerWave.h
+BattleTank/Source/BattleTank/Private/GerstnerWave.cpp
+BattleTank/Source/BattleTank/Private/SingleGerstner.cpp
