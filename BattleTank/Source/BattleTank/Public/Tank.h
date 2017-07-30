@@ -17,6 +17,8 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
+    virtual void BeginPlay() override;
+
     virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
     // Return current health as a percentage of starting health, between 0 and 1
@@ -31,5 +33,5 @@ private:
 
     // Health of this tank
     UPROPERTY(VisibleAnywhere, Category = "Setup")
-    int32 CurrentHealth = StartingHealth;
+    int32 CurrentHealth;
 };

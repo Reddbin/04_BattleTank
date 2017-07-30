@@ -12,13 +12,18 @@ void ATankAIController::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     auto* AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
     auto* PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-    if(!ensure(PlayerTank && AimingComponent)) {return;}
+    if(!ensure(AimingComponent)) {return;}
+    if(!PlayerTank) {return;}  // there can be times when there is no player controlled tank
 
     // move towards the player
     MoveToActor(PlayerTank, AcceptanceRadius); // TODO check radius is in cm
     // Aim toward the player
-    AimingComponent->AimAt(PlayerTank->GetActorLocation());
-    
+    bool hasAimingSolution = AimingComponent->AimAt(PlayerTank->GetActorLocation());
+    if (!hasAimingSolution)
+    {
+        MoveToActor(PlayerTank, AcceptanceRadius/10.f);
+    }
+
     // if aim or locked
     if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
     {
@@ -46,5 +51,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 
 void ATankAIController::OnDeath()
 {
+    if(!GetPawn()){return;}
+    GetPawn()->DetachFromControllerPendingDestroy();
     UE_LOG(LogTemp, Warning, TEXT("AI Tank destroyed!"))
 }

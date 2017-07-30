@@ -74,11 +74,11 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
     Turret = TurretToSet;
 }
 
-// Finds the vector for hiting the target and moves turret+ barrel if there is a solution 
-void UTankAimingComponent::AimAt(FVector HitLocation)
+// Finds the vector for hitting the target and moves turret+ barrel if there is a solution 
+bool UTankAimingComponent::AimAt(FVector HitLocation)
 {
-    if (!ensure(Barrel)) { return;}
-    if (!ensure(Turret)) { return;}
+    if (!ensure(Barrel)) { return false;}
+    if (!ensure(Turret)) { return false;}
 
     FVector OutLauchnVelocity;
     FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -96,6 +96,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
         AimDirection = OutLauchnVelocity.GetSafeNormal();
         MoveBarrelTowards(AimDirection);
     }
+    return bHaveAimSolution;
 }
 
 // Delegates to Barrel and Turret for purpose of moving them

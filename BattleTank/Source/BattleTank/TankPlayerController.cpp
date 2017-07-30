@@ -77,7 +77,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
     if (GetWorld()->LineTraceSingleByChannel(HitResult,
                                              StartOfLine,
                                              EndOfLine,
-                                             ECC_Visibility)
+                                             ECC_Camera)
         )
     {
         OutHitLocation = HitResult.Location;
@@ -100,7 +100,9 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
     }
 }
 
+// Go into Spectator mode upon defeat
 void ATankPlayerController::OnDeath()
 {
+    StartSpectatingOnly();
     UE_LOG(LogTemp, Warning, TEXT("Player Tank destroyed!"))
 }

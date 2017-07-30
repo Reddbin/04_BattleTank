@@ -39,7 +39,7 @@ public:
     void Fire();
 
     UFUNCTION(BlueprintCallable)
-    void AimAt(FVector HitLocation);
+    bool AimAt(FVector HitLocation);
 
     UFUNCTION(BlueprintCallable, Category = "Setup")
     int32 GetCurrentAmmo() const;
