@@ -20,6 +20,11 @@ protected:
     float AcceptanceRadius = 6000.f;
 	
 private:
+    virtual void SetPawn(APawn* InPawn) override;
+
+    UFUNCTION()
+    void OnDeath();
+
     virtual void Tick(float DeltaTime) override;
 
 	virtual void BeginPlay() override;

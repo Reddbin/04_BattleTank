@@ -26,6 +26,11 @@ protected:
     void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
 private:
+    virtual void SetPawn(APawn* InPawn) override;
+
+    UFUNCTION()
+    void OnDeath();
+
     UPROPERTY(EditDefaultsOnly)
     float LineTraceRange = 1000000.0;
 
