@@ -27,6 +27,11 @@ private:
     UFUNCTION()
     void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
+    void DestroyProjectile();
+
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float DestroyDelay = 1.f;
+
     UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 	
     UPROPERTY(VisibleAnywhere, Category = "Components")
